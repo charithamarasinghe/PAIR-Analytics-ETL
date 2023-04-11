@@ -338,7 +338,7 @@ def run_etl():
 
 
 # Run job every hour at the 5th minute (In UTC time zone)
-schedule.every().hour.at(":18", "UTC").do(run_etl)
+schedule.every().hour.at(":05", "UTC").do(run_etl)
 
 while True:
     schedule.run_pending()
