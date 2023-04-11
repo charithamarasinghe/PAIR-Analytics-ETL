@@ -1,0 +1,15 @@
+cffi==1.15.1
+cryptography==40.0.1
+geographiclib==2.0
+geopy==2.3.0
+greenlet==2.0.2
+numpy==1.24.2
+pandas==2.0.0
+pycparser==2.21
+python-dateutil==2.8.2
+pytz==2023.3
+schedule==1.2.0
+six==1.16.0
+SQLAlchemy==2.0.9
+typing-extensions==4.5.0
+tzdata==2023.3
