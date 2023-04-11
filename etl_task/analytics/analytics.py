@@ -316,9 +316,11 @@ def run_etl():
     """
     logging.info(f"Starting data extraction at {str(datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'))} UTC...")
 
+    # capturing last inserted records time required for the incremental loading
     inserted_time = resolve_last_inserted_time()
     current_time = datetime.datetime.utcnow()
 
+    # generating series to be extracted, starting from the last inserted time
     series_to_be_extracted = pd.Series(pd.date_range(
         start=inserted_time,
         end=f'{str(current_time.date())} {str(datetime.datetime.utcnow().hour)}:00:00', freq='H'))
@@ -328,12 +330,18 @@ def run_etl():
         logging.info(f"Processing for the hour starting at: {str(sr_item)}")
         end_time = sr_item.replace(minute=59, second=59)
 
+        # calculating summary for the given period
         summary = transform_data(start_time=str(sr_item), end_time=str(end_time))
         if not summary.empty:
             logging.info(f"{len(summary)} summary records generated...")
+
+            # inserting considered range starting time to the summary table
             summary = summary.assign(hour_start_time=str(sr_item))
 
+            # format final summary table for the period to be uploaded
             summary = format_data(summary=summary)
+
+            # uploading summary table
             load_data(summary=summary)
 
 
